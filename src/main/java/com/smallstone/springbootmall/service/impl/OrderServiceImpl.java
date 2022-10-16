@@ -5,6 +5,7 @@ import com.smallstone.springbootmall.dao.ProductDao;
 import com.smallstone.springbootmall.dao.UserDao;
 import com.smallstone.springbootmall.dto.BuyItem;
 import com.smallstone.springbootmall.dto.CreateOrderRequest;
+import com.smallstone.springbootmall.dto.OrderQueryParams;
 import com.smallstone.springbootmall.model.Order;
 import com.smallstone.springbootmall.model.OrderItem;
 import com.smallstone.springbootmall.model.Product;
@@ -34,6 +35,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserDao userDao;
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+
+        List<Order> orderList = orderDao.getOrders(orderQueryParams);
+
+        for (Order order : orderList) {
+
+            List<OrderItem> orderItemLsit = orderDao.getOrderItemByOrderId(order.getOrderId());
+
+            order.setOrderItemList(orderItemLsit);
+        }
+
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        return orderDao.countOrder(orderQueryParams);
+    }
 
     @Override
     public Order getOrderById(Integer orderId) {
