@@ -1,5 +1,6 @@
 package com.smallstone.springbootmall.controller;
 
+import com.smallstone.springbootmall.dto.UserLoginRequest;
 import com.smallstone.springbootmall.dto.UserRegisterRequest;
 import com.smallstone.springbootmall.model.User;
 import com.smallstone.springbootmall.service.UserService;
@@ -29,5 +30,13 @@ public class UserController {
         User user = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> lgoin(@RequestBody @Valid UserLoginRequest userLoginRequest)
+    {
+        User user = userService.login(userLoginRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }
